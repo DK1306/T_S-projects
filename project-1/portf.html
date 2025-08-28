@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            background-color: #007BFF;
+            color: white;
+        }
+        header h1 {
+            font-size: 2.5em;
+        }
+        header p {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 15px;
+            background-color: white;
+            color: #007BFF;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        section {
+            padding: 40px 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        section h2 {
+            margin-bottom: 20px;
+            color: #007BFF;
+        }
+        ul {
+            list-style-type: none;    
+        }
+        ul li {
+            padding: 5px 0;
+            display: inline;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+            margin: auto;
+        }
+        input, textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .social {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .social a {
+            margin: 0 10px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .social a:hover {
+            text-decoration: underline;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+        }
+        @media(max-width: 600px) {
+            header h1 {
+                font-size: 2em;
+            }
+            header p {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Hi, I'm DHINESHKUMAR</h1>
+        <p>Web Developer | Designer | Learner</p>
+        <a href="resume.pdf" download class="btn">Download Resume</a>
+    </header>
+    <section id="about">
+        <h2>About Me</h2>
+        <p>I'm a beginner web developer passionate about creating simple and functional websites. I love learning new technologies and improving my skills every day.</p>
+    </section>
+    <section id="skills">
+        <h2>Skills</h2>
+        <ul>
+            <li>HTML |</li>
+            <li>CSS |</li>
+            <li>JavaScript |</li>
+            <li>React (basic)</li>
+        </ul>
+    </section>
+    <section id="projects">
+        <h2>Projects</h2>
+        <ul>
+            <li>Personal Portfolio Website |</li>
+            <li>Simple To-Do App |</li>
+            <li>Calculator Web App</li>
+        </ul>
+    </section>
+    <section id="contact">
+        <h2 style="text-align: center;">Contact Me</h2>
+        <form id="contactForm">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <textarea placeholder="Your Message" required></textarea>
+            <button type="submit">Send</button>
+        </form>
+        <div class="social">
+            <a href="https://github.com/" target="_blank">GitHub</a>
+            <a href="https://linkedin.com/" target="_blank">LinkedIn</a>
+            <a href="https://twitter.com/" target="_blank">Twitter</a>
+        </div>
+    </section>
+    <footer>
+        <p>&copy; 2025 Dhinesh. All rights reserved.</p>
+    </footer>
+    <script>
+        document.getElementById("contactForm").addEventListener("submit", function(e){
+            e.preventDefault();
+            alert("Thank you! Your message has been sent.");
+            this.reset();
+        });
+    </script>
+</body>
+</html>

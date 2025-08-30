@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>project-3</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      display: flex;
+      gap: 20px;
+      background-image: linear-gradient(to bottom left, blue, rgb(251, 0, 242));
+    }
+    .form-container, .preview-container {
+      width: 50%;
+      padding: 20px;
+      border: 1px solid #000000;
+      border-radius: 10px;
+      background: #f9f9f958;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background: #f9f9f958;
+      color: black;
+    }
+    input::placeholder, textarea::placeholder{
+        color: black;
+    }
+    button {
+      padding: 10px 15px;
+      background: #2196f3;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    h2 { text-align: center; }
+    #resumePreview {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Resume Form</h2>
+    <form id="resumeForm">
+      <h3>Personal Info</h3>
+      <input type="text" id="name" placeholder="Full Name" required>
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="text" id="phone" placeholder="Phone" onblur=c_p() required>
+      <sub id="p_v"></sub>
+      <input type="text" id="address" placeholder="Address">
+      <h3>Education</h3>
+      <input type="text" id="degree" placeholder="Degree" required>
+      <input type="text" id="institution" placeholder="Institution" required>
+      <input type="text" id="year" placeholder="Year" required>
+      <h3>Experience</h3>
+      <input type="text" id="jobTitle" placeholder="Job Title">
+      <input type="text" id="company" placeholder="Company">
+      <input type="text" id="duration" placeholder="Duration">
+      <textarea id="description" placeholder="Job Description"></textarea>
+      <button type="button" onclick="generateResume()">Preview Resume</button>
+      <button type="button" onclick="downloadPDF()">Download PDF</button>
+      <button type="reset"> Reset </button>
+    </form>
+  </div>
+  <div class="preview-container">
+    <h2>Resume Preview</h2>
+    <div id="resumePreview">
+      <h1 id="pName">Your Name</h1>
+      <p id="pEmail">Email: example@mail.com</p>
+      <p id="pPhone">Phone: 0000000000</p>
+      <p id="pAddress">Address: Your address here</p>
+      <hr>
+      <h3>Education</h3>
+      <p id="pEducation">Degree - Institution (Year)</p>
+      <hr>
+      <h3>Experience</h3>
+      <p id="pExperience">Job Title at Company (Duration)</p>
+      <p id="pDescription">Job description goes here...</p>
+    </div>
+  </div>
+  <script>
+    function generateResume() {
+      document.getElementById("pName").innerText = document.getElementById("name").value;
+      document.getElementById("pEmail").innerText = "Email: " + document.getElementById("email").value;
+        document.getElementById("pPhone").innerText = "Phone: " + document.getElementById("phone").value;
+      document.getElementById("pAddress").innerText = "Address: " + document.getElementById("address").value;
+      document.getElementById("pEducation").innerText =
+        document.getElementById("degree").value + " - " +
+        document.getElementById("institution").value + " (" +
+        document.getElementById("year").value + ")";
+      document.getElementById("pExperience").innerText =
+        document.getElementById("jobTitle").value + " at " +
+        document.getElementById("company").value + " (" +
+        document.getElementById("duration").value + ")";
+      document.getElementById("pDescription").innerText =
+        document.getElementById("description").value;
+    }
+    function downloadPDF() {
+      var element = document.getElementById("resumePreview");
+      html2pdf().from(element).save("My_Resume.pdf");
+    }
+    function c_p()
+    {
+        var pat = /^[6-9]{1}[0-9]{9}$/;
+        if(!pat.test(document.getElementById("phone").value)){
+        document.getElementById("phone").value="";
+        document.getElementById("p_v").innerText="Not_valid";
+        document.getElementById("p_v").style.color="red";
+        }
+       else{
+        document.getElementById("p_v").innerText="valid phoneNo.";
+        document.getElementById("p_v").style.color="green";
+       }
+    }
+  </script>
+</body>
+</html>

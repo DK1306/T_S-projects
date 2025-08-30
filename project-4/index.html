@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>To-Do App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            margin: 40px;
+            height: 100vh;
+            background-repeat: no-repeat;
+            background-image: linear-gradient(to bottom, white,blue);
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            height: fit-content;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+            background-color: rgba(255, 255, 255, 0.141);
+        }
+        h2 {
+            text-align: center;
+        }
+        .task-input {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        .task-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+            background: rgba(255, 255, 255, 0.412);
+        }
+        .task-input button {
+            padding: 10px;
+            border: none;
+            background: #2196f3;
+            color: white;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            margin-bottom: 8px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        li.completed span {
+            text-decoration: line-through;
+            color: gray;
+        }
+        .actions button {
+            margin-left: 5px;
+            border: none;
+            padding: 4px 6px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .edit {
+            background: #ffc107;
+        }
+
+        .delete {
+            background: #f44336;
+            color: white;
+        }
+
+        .filter {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .filter button {
+            margin: 3px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .active {
+            background: #2196f3;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>To-Do List</h2>
+        <div class="task-input">
+            <input type="text" id="taskInput" placeholder="Enter a task">
+            <button onclick="addTask()">Add</button>
+        </div>
+        <div class="filter">
+            <button onclick="setFilter('all')" class="active">All</button>
+            <button onclick="setFilter('pending')">Pending</button>
+            <button onclick="setFilter('completed')">Completed</button>
+        </div>
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        let filter = "all";
+
+        function save() {
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+            render();
+        }
+
+        function addTask() {
+            let text = document.getElementById("taskInput").value.trim();
+            if (!text) return alert("Enter a task!");
+            tasks.push({ text, completed: false });
+            document.getElementById("taskInput").value = "";
+            save();
+        }
+
+        function toggle(i) { tasks[i].completed = !tasks[i].completed; save(); }
+        function edit(i) {
+            let newText = prompt("Edit task:", tasks[i].text);
+            if (newText) { tasks[i].text = newText.trim(); save(); }
+        }
+        function remove(i) { tasks.splice(i, 1); save(); }
+
+        function setFilter(f) {
+            filter = f;
+            document.querySelectorAll(".filter button").forEach(b => b.classList.remove("active"));
+            event.target.classList.add("active");
+            render();
+        }
+
+        function render() {
+            let list = document.getElementById("taskList");
+            list.innerHTML = "";
+            tasks.filter(t => filter === "all" || (filter === "completed" ? t.completed : !t.completed))
+                .forEach((t, i) => {
+                    list.innerHTML += `
+            <li class="${t.completed ? 'completed' : ''}">
+              <span onclick="toggle(${i})">${t.text}</span>
+              <div class="actions">
+                <button class="edit" onclick="edit(${i})">Edit</button>
+                <button class="delete" onclick="remove(${i})">Remove</button>
+              </div>
+            </li>`;
+                });
+        }
+        render();
+    </script>
+</body>
+
+</html>

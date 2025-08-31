@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>SMD</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-image: linear-gradient(to bottom, lightblue, white);
+            background-repeat: no-repeat;
+            min-height: 100vh;
+        }
+
+        h2 {
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 25px 0px;
+        }
+
+        .form-container,
+        .table-container {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        input,
+        select,
+        button {
+            padding: 8px;
+            margin: 5px;
+            border: 2px solid black;
+            border-radius: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ccc;
+        }
+
+        th,
+        td {
+            text-align: center;
+            padding: 8px;
+        }
+
+        .actions button {
+            margin: 0 2px;
+        }
+
+        #search {
+            width: 200px;
+        }
+        #studentTable button{
+            background-color: black;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Student Management Dashboard</h2>
+    <div class="form-container">
+        <h3>Add / Update Student</h3>
+        <input type="text" id="name" placeholder="Name">
+        <input type="text" id="regNo" placeholder="Reg No">
+        <input type="text" id="dept" placeholder="Department">
+        <input type="text" id="year" placeholder="Year">
+        <input type="number" id="marks" placeholder="Marks">
+        <button onclick="addOrUpdateStudent()" style="background-color: black;color: white;">Save</button>
+    </div>
+    <div>
+        <input type="text" id="search" placeholder="Search by Name/RegNo/Dept" onkeyup="searchStudent()">
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Reg No</th>
+                    <th>Department</th>
+                    <th>Year</th>
+                    <th>Marks</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="studentTable"></tbody>
+        </table>
+    </div>
+    <script>
+        let editIndex = -1;
+        function getStudents() {
+            return JSON.parse(localStorage.getItem("students") || "[]");
+        }
+        function saveStudents(students) {
+            localStorage.setItem("students", JSON.stringify(students));
+        }
+        function displayStudents() {
+            let students = getStudents();
+            let table = document.getElementById("studentTable");
+            table.innerHTML = "";
+            students.forEach((s, index) => {
+                table.innerHTML += `
+        <tr>
+          <td>${s.name}</td>
+          <td>${s.regNo}</td>
+          <td>${s.dept}</td>
+          <td>${s.year}</td>
+          <td>${s.marks}</td>
+          <td class="actions">
+            <button onclick="editStudent(${index})">Edit</button>
+            <button onclick="deleteStudent(${index})">Delete</button>
+          </td>
+        </tr>`;
+            });
+        }
+        function addOrUpdateStudent() {
+            let name = document.getElementById("name").value;
+            let regNo = document.getElementById("regNo").value;
+            let dept = document.getElementById("dept").value;
+            let year = document.getElementById("year").value;
+            let marks = document.getElementById("marks").value;
+            if (!name || !regNo || !dept || !year || !marks) {
+                alert("Please fill all fields!");
+                return;
+            }
+            let students = getStudents();
+            if (editIndex === -1) {
+                students.push({ name, regNo, dept, year, marks });
+            } else {
+                students[editIndex] = { name, regNo, dept, year, marks };
+                editIndex = -1;
+            }
+            saveStudents(students);
+            displayStudents();
+            clearForm();
+        }
+        function editStudent(index) {
+            let students = getStudents();
+            let s = students[index];
+            document.getElementById("name").value = s.name;
+            document.getElementById("regNo").value = s.regNo;
+            document.getElementById("dept").value = s.dept;
+            document.getElementById("year").value = s.year;
+            document.getElementById("marks").value = s.marks;
+            editIndex = index;
+        }
+        function deleteStudent(index) {
+            let students = getStudents();
+            students.splice(index, 1);
+            saveStudents(students);
+            displayStudents();
+        }
+        function clearForm() {
+            document.getElementById("name").value = "";
+            document.getElementById("regNo").value = "";
+            document.getElementById("dept").value = "";
+            document.getElementById("year").value = "";
+            document.getElementById("marks").value = "";
+        }
+        function searchStudent() {
+            let query = document.getElementById("search").value.toLowerCase();
+            let rows = document.querySelectorAll("#studentTable tr");
+            rows.forEach(row => {
+                let text = row.innerText.toLowerCase();
+                row.style.display = text.includes(query) ? "" : "none";
+            });
+        }
+        window.onload = displayStudents;
+    </script>
+</body>
+
+</html>
